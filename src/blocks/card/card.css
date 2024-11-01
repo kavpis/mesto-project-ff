@@ -1,7 +1,6 @@
 @import url('./__description/card__description.css');
 @import url('./__image/card__image.css');
 @import url('./__like-button/card__like-button.css');
-@import url('./__like-button/_is-active/card__like-button_is-active.css');
 @import url('./__delete-button/card__delete-button.css');
 @import url('./__title/card__title.css');
 
@@ -12,4 +11,22 @@
   border-radius: 10px;
   position: relative;
   overflow: hidden;
+}
+
+.card__like-block {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+}
+
+.card__like-counter {
+  color: #000;
+  text-align: center;
+  font-size: 13px;
+  line-height: normal;
+  display: none;
+}
+
+.card__like-counter_is-active {
+  display: inline-block;
 }
