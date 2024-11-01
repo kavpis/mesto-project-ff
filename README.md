@@ -1,2 +1,2 @@
-# Проектная работа Mesto
+https://kavpis.github.io/mesto-project-ff
 
