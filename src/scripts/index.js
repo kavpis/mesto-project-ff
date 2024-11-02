@@ -4,18 +4,19 @@ import {
   openModal,
   handleModalClick,
 } from './modals.js';
-import { createCard as DOMCreateCard } from './cardsChange.js';
+import { createCard as DOMCreateCard,
+  handleCardDelete,
+  handleCardLike
+ } from './card.js';
 import {
   getInitialCards as APIGetInitialCards,
   getUserInfo as APIGetUserInfo,
   changeUserAvatar as APIchangeUserAvatar,
   changeUserInfo as APIchangeUserInfo,
-  likeCard as APILikeCard,
-  remove__Like as APIRemove__Like,
   createCard as APICreateCard,
-  deleteCard as APIDeleteCard,
 } from './api.js';
 import { resetValidation, enableValidation } from './validation.js';
+import {renderLoading} from './utils.js'
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -56,8 +57,8 @@ const profileDescriptionInput = profileForm.elements.description;
 const popupProfile = document.querySelector('.popup_type_edit');
 const popupProfileButtonOpen = document.querySelector('.profile__edit-button');
 
-const popupConfirm = document.querySelector('.popup_type_confirm');
-const popupConfirmButton = popupConfirm.querySelector('.popup__button_confirm');
+export const popupConfirm = document.querySelector('.popup_type_confirm');
+export const popupConfirmButton = popupConfirm.querySelector('.popup__button_confirm');
 
 const setProfile = ({ name, description, avatar }) => {
   profileName.textContent = name;
@@ -65,52 +66,9 @@ const setProfile = ({ name, description, avatar }) => {
   profileImage.style.backgroundImage = `url(${avatar})`;
 };
 
-const renderLoading = ({ buttonElement, isLoading }) => {
-  buttonElement.textContent = isLoading ? 'Сохранение...' : 'Сохранить';
-};
-
-const handleCardLike = ({ cardId, buttonElement, counterElement }) => {
-  buttonElement.disabled = true;
-
-  if (buttonElement.classList.contains('card__like-button_is-active')) {
-    APIRemove__Like(cardId)
-      .then(({ likes }) => {
-        buttonElement.classList.remove('card__like-button_is-active');
-        counterElement.classList.toggle('card__like-counter_is-active', likes.length > 0);
-        counterElement.textContent = likes.length || '';
-      })
-      .catch(console.error)
-      .finally(() => buttonElement.disabled = false);
-  } else {
-    APILikeCard(cardId)
-      .then(({ likes }) => {
-        buttonElement.classList.add('card__like-button_is-active');
-        counterElement.classList.add('card__like-counter_is-active');
-        counterElement.textContent = likes.length;
-      })
-      .catch(console.error)
-      .finally(() => buttonElement.disabled = false);
-  }
-};
-
-const handleCardDelete = ({ cardId, buttonElement }) => {
-  openModal(popupConfirm);
-  popupConfirmButton.onclick = () => {
-    buttonElement.disabled = true;
-    APIDeleteCard(cardId)
-      .then(() => {
-        buttonElement.closest('.card').remove();
-        closeModal(popupConfirm);
-      })
-      .catch(() => {
-        buttonElement.disabled = false;
-        console.error(error);
-      });
-  };
-};
-
 const handleCardFormSubmit = (event) => {
   event.preventDefault();
+  resetValidation(cardForm, validationConfig);
   renderLoading({ buttonElement: cardFormSubmitButton, isLoading: true });
 
   APICreateCard({
@@ -173,7 +131,6 @@ const handlePopupProfileClick = () => {
 
 const handlePopupCardClick = () => {
   cardForm.reset();
-  resetValidation(cardForm, validationConfig);
   openModal(popupCard);
 };
 

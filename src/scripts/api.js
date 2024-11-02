@@ -71,7 +71,7 @@ const likeCard = (cardId) =>
   }).then(handleResponse);
 
 // Удаление лайка с карточки
-const remove__Like = (cardId) =>
+const RemoveLike = (cardId) =>
   fetch(`${apiBaseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers,
@@ -88,6 +88,6 @@ export {
   createCard,
   deleteCard,
   likeCard,
-  remove__Like,
+  RemoveLike,
   validate__ImageUrl,
 };
