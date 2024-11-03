@@ -57,8 +57,7 @@ const profileDescriptionInput = profileForm.elements.description;
 const popupProfile = document.querySelector('.popup_type_edit');
 const popupProfileButtonOpen = document.querySelector('.profile__edit-button');
 
-export const popupConfirm = document.querySelector('.popup_type_confirm');
-export const popupConfirmButton = popupConfirm.querySelector('.popup__button_confirm');
+
 
 const setProfile = ({ name, description, avatar }) => {
   profileName.textContent = name;
@@ -68,7 +67,6 @@ const setProfile = ({ name, description, avatar }) => {
 
 const handleCardFormSubmit = (event) => {
   event.preventDefault();
-  resetValidation(cardForm, validationConfig);
   renderLoading({ buttonElement: cardFormSubmitButton, isLoading: true });
 
   APICreateCard({
@@ -87,6 +85,7 @@ const handleCardFormSubmit = (event) => {
         })
       );
       cardForm.reset();
+      resetValidation(cardForm, validationConfig);
       closeModal(popupCard);
     })
     .catch(console.error)
@@ -158,7 +157,7 @@ popupCard.addEventListener('click', handleModalClick);
 popupCardButtonOpen.addEventListener('click', handlePopupCardClick);
 popupProfile.addEventListener('click', handleModalClick);
 popupProfileButtonOpen.addEventListener('click', handlePopupProfileClick);
-popupConfirm.addEventListener('click', handleModalClick);
+
 
 enableValidation(validationConfig);
 

@@ -5,12 +5,13 @@ import {
 } from './api.js';
 import{
 openModal,
-closeModal
+closeModal,
+handleModalClick
 } from './modals.js'
-import {
-  popupConfirmButton,
-  popupConfirm
-} from './index.js';
+
+const popupConfirm = document.querySelector('.popup_type_confirm');
+const popupConfirmButton = popupConfirm.querySelector('.popup__button_confirm');
+
 const createCard = ({
   currentUserId,
   template,
@@ -93,7 +94,7 @@ export const handleCardLike = ({ cardId, buttonElement, counterElement }) => {
       .finally(() => buttonElement.disabled = false);
   }
 };
-
+popupConfirm.addEventListener('click', handleModalClick);
 export const handleCardDelete = ({ cardId, buttonElement }) => {
   openModal(popupConfirm);
   popupConfirmButton.onclick = () => {
